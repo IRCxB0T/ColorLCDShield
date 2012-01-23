@@ -15,10 +15,14 @@
 #include "ColorLCDShield.h"
 
 extern "C" {
-	#include "wiring.h"
+	#if defined(ARDUINO) && ARDUINO >= 100
+		#include "wiring_private.h"
+	#else
+		#include "wiring.h"
+	#endif
 }
 
-LCDShield::LCDShield()
+ColorLCDShield::ColorLCDShield()
 {
 
 #if defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1280__)
@@ -32,7 +36,7 @@ LCDShield::LCDShield()
 	PORTD	=	0xFF;
 }
 
-void LCDShield::LCDCommand(unsigned char data)
+void ColorLCDShield::LCDCommand(unsigned char data)
 {
 	char jj;
 
@@ -60,7 +64,7 @@ void LCDShield::LCDCommand(unsigned char data)
 	sbi(LCD_PORT_CS, CS);     // disable
 }
 
-void LCDShield::LCDData(unsigned char data)
+void ColorLCDShield::LCDData(unsigned char data)
 {
 	char j;
 
@@ -88,7 +92,7 @@ void LCDShield::LCDData(unsigned char data)
 	LCD_PORT_CS	|=	(1<<CS);  // disable
 }
 
-void LCDShield::init(int type)
+void ColorLCDShield::init(int type)
 {
 	driver = type;
 
@@ -154,7 +158,7 @@ void LCDShield::init(int type)
 	LCDCommand(DISPON);   // display on(PHILLIPS)
 }
 
-void LCDShield::clear(int color)
+void ColorLCDShield::clear(int color)
 {
 	if (driver) // if it's an Epson
 	{
@@ -192,7 +196,7 @@ void LCDShield::clear(int color)
 	y_offset = 0;
 }
 
-void LCDShield::contrast(char setting)
+void ColorLCDShield::contrast(char setting)
 {
 	LCDCommand(VOLCTR);      // electronic volume, this is the contrast/brightness(EPSON)
 	LCDData(setting);        // volume (contrast) setting - course adjustment,  -- original was 24
@@ -200,7 +204,7 @@ void LCDShield::contrast(char setting)
 	LCDCommand(NOP);         // nop(EPSON)
 }
 
-void LCDShield::setPixel(int color, unsigned char x, unsigned char y)
+void ColorLCDShield::setPixel(int color, unsigned char x, unsigned char y)
 {
 	y	=	(COL_HEIGHT - 1) - y;
 	x = (ROW_LENGTH - 1) - x;
@@ -237,7 +241,7 @@ void LCDShield::setPixel(int color, unsigned char x, unsigned char y)
 	}
 }
 
-void LCDShield::setCircle (int x0, int y0, int radius, int color)
+void ColorLCDShield::setCircle (int x0, int y0, int radius, int color)
 {
 	int f = 1 - radius;
 	int ddF_x = 0;
@@ -273,7 +277,7 @@ void LCDShield::setCircle (int x0, int y0, int radius, int color)
 	}
 }
 
-void LCDShield::setChar(char c, int x, int y, int fColor, int bColor)
+void ColorLCDShield::setChar(char c, int x, int y, int fColor, int bColor)
 {
 	y	=	(COL_HEIGHT - 1) - y; // make display "right" side up
 	x	=	(ROW_LENGTH - 2) - x;
@@ -383,7 +387,7 @@ void LCDShield::setChar(char c, int x, int y, int fColor, int bColor)
 	}
 }
 
-void LCDShield::setStr(char *pString, int x, int y, int fColor, int bColor)
+void ColorLCDShield::setStr(char *pString, int x, int y, int fColor, int bColor)
 {
 	x = x + 16;
 	y = y + 8;
@@ -398,7 +402,7 @@ void LCDShield::setStr(char *pString, int x, int y, int fColor, int bColor)
 	}
 }
 
-void LCDShield::setLine(int x0, int y0, int x1, int y1, int color)
+void ColorLCDShield::setLine(int x0, int y0, int x1, int y1, int color)
 {
 	int dy = y1 - y0; // Difference between y0 and y1
 	int dx = x1 - x0; // Difference between x0 and x1
@@ -456,7 +460,7 @@ void LCDShield::setLine(int x0, int y0, int x1, int y1, int color)
 	}
 }
 
-void LCDShield::setRect(int x0, int y0, int x1, int y1, unsigned char fill, int color)
+void ColorLCDShield::setRect(int x0, int y0, int x1, int y1, unsigned char fill, int color)
 {
 	// check if the rectangle is to be filled
 	if (fill == 1)
@@ -491,7 +495,7 @@ void LCDShield::setRect(int x0, int y0, int x1, int y1, unsigned char fill, int 
 	}
 }
 
-void LCDShield::printLogo(void)
+void ColorLCDShield::printLogo(void)
 {
 	int x = 4, y = 25, logo_ix = 0, z;
 	char logo;
@@ -513,7 +517,7 @@ void LCDShield::printLogo(void)
 	}
 }
 
-void LCDShield::off(void)
+void ColorLCDShield::off(void)
 {
 	if (driver)	// If it's an epson
 		LCDCommand(DISOFF);
@@ -521,7 +525,7 @@ void LCDShield::off(void)
 		LCDCommand(DISPOFF);
 }
 
-void LCDShield::on(void)
+void ColorLCDShield::on(void)
 {
 	if (driver)	// If it's an epson
 		LCDCommand(DISON);

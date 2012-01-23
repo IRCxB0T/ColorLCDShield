@@ -17,7 +17,11 @@
 #define PHILLIPS	0
 #define EPSON		1
 
-#include <WProgram.h>
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include <Arduino.h>
+#else
+	#include <WProgram.h>
+#endif
 
 #include <inttypes.h>
 
@@ -337,7 +341,7 @@ static char logo_spark[1120] =	{
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,};
 
-class LCDShield
+class ColorLCDShield
 {
 private:
 	void LCDCommand(unsigned char data);
@@ -345,7 +349,7 @@ private:
 	uint8_t driver;
 	
 public:
-	LCDShield();
+	ColorLCDShield();
 
 	void init(int type);
 	void clear(int color);
