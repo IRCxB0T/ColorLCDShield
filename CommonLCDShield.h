@@ -11,7 +11,7 @@
  *  to use and abuse this code however you'd like. If you find it useful
  *  please attribute, and SHARE-ALIKE!
  *
- *  This is based on code by Jim Bloom.
+ *  This is based on code by Jim Lindblom.
  **/
 
 #ifndef CommonLCDShield_H
