@@ -94,15 +94,7 @@ void LCDShield::LCDData(unsigned char data)
 	LCD_PORT_CS	|=	(1<<CS);  // disable
 }
 
-void LCDShield::contrast(char setting)
-{
-	/*LCDCommand(VOLCTR);      // electronic volume, this is the contrast/brightness(EPSON)
-	LCDData(setting);        // volume (contrast) setting - course adjustment,  -- original was 24
-	
-	LCDCommand(NOP);         // nop(EPSON)*/
-}
-
-void LCDShield::setCircle (int x0, int y0, int radius, int color)
+void LCDShield::drawCircle (uint8_t x0, uint8_t y0, int radius, int color)
 {
 	int f = 1 - radius;
 	int ddF_x = 0;
@@ -138,7 +130,21 @@ void LCDShield::setCircle (int x0, int y0, int radius, int color)
 	}
 }
 
-void LCDShield::setStr(char *pString, int x, int y, int fColor, int bColor)
+void LCDShield::setCircle (uint8_t x0, uint8_t y0, int radius, int color, uint8_t fill)
+{
+	if (fill == 1) {
+		uint8_t i = 0;
+		for (i; i<=radius; i++) {
+			drawCircle(x0, y0, i, color);
+		}
+	}
+	else {
+		drawCircle(x0, y0, radius, color);
+	}
+
+}
+
+void LCDShield::setStr(char *pString, uint8_t x, uint8_t y, int fColor, int bColor)
 {
 	x = x + 16;
 	y = y + 8;

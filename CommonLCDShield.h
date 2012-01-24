@@ -190,19 +190,20 @@ class LCDShield
 protected:
 	void LCDCommand(unsigned char data);
 	void LCDData(unsigned char data);
+	void drawCircle(uint8_t x0, uint8_t y0, int radius, int color);
 	uint8_t driver;
 	
 public:
 	LCDShield();
 	virtual void init(void) =0;
 	virtual void clear(int color) =0;
-	void contrast(char setting);
+	virtual void contrast(char setting) =0;
 	
 	virtual void setPixel(int color, unsigned char x, unsigned char y) =0;
-	void setCircle (int x0, int y0, int radius, int color);
+	void setCircle (uint8_t x0, uint8_t y0, int radius, int color, uint8_t fill);
 	
 	virtual void setChar(char c, int x, int y, int fColor, int bColor) =0;
-	void setStr(char *pString, int x, int y, int fColor, int bColor);
+	void setStr(char *pString, uint8_t x, uint8_t y, int fColor, int bColor);
 	
 	void setLine(int x0, int y0, int x1, int y1, int color);
 	void setRect(int x0, int y0, int x1, int y1, unsigned char fill, int color);
